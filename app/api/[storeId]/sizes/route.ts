@@ -1,6 +1,7 @@
-import prismadb from "@/lib/prismadb";
-import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs";
+
+import prismadb from "@/lib/prismadb";
 
 export async function POST(
   req: Request,
@@ -13,7 +14,7 @@ export async function POST(
     const { name, value } = body;
 
     if (!userId) {
-      return new NextResponse("Unaunthenticated", { status: 401 });
+      return new NextResponse("Unauthenticated", { status: 401 });
     }
 
     if (!name) {
@@ -21,11 +22,11 @@ export async function POST(
     }
 
     if (!value) {
-      return new NextResponse("Value is required"), { status: 400 };
+      return new NextResponse("Value is required", { status: 400 });
     }
 
     if (!params.storeId) {
-      return new NextResponse("Store id is required"), { status: 400 };
+      return new NextResponse("Store id is required", { status: 400 });
     }
 
     const storeByUserId = await prismadb.store.findFirst({
@@ -60,7 +61,7 @@ export async function GET(
 ) {
   try {
     if (!params.storeId) {
-      return new NextResponse("Store id is required"), { status: 400 };
+      return new NextResponse("Store id is required", { status: 400 });
     }
 
     const sizes = await prismadb.size.findMany({
